@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Colección de CDs</h1>
+  <button id="cargar">Carga el catalogo</button>
+
+  <script>
+    document.getElementById("cargar").addEventListener("click", cargarCatalogo);
+
+    function cargarCatalogo() {
+      const xhr = new XMLHttpRequest;
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+          //Removemos si ya existia una
+          let tablaAntigua = document.getElementById("tabla");
+          if (tablaAntigua) {
+            tablaAntigua.remove();
+          }
+
+          //Creamos la tabla
+          let tabla = document.createElement("table");
+          tabla.setAttribute("border", "1");
+          tabla.setAttribute("id", "tabla");
+
+          //Creamos la cabecera
+          let cabecera = document.createElement("thead");
+          let filaCabecera = document.createElement("tr");
+
+          let celdaArtista = document.createElement("th");
+          celdaArtista.textContent = "Artista";
+
+          let celdaTitulo = document.createElement("th");
+          celdaTitulo.textContent = "Titulo";
+          
+          filaCabecera.appendChild(celdaArtista);
+          filaCabecera.appendChild(celdaTitulo);
+
+          cabecera.appendChild(filaCabecera);
+          tabla.appendChild(cabecera);
+
+          //Creamos el cuerpo
+          let tbody = document.createElement("tbody");
+          let catalogo = this.responseXML;
+
+          let discosCollection = catalogo.getElementsByTagName("CD");
+          let discos = Array.from(discosCollection);
+          
+          discos.forEach(disco => {
+            //Almacenamos en variables el artista y titulo del disco
+            let artista = disco.getElementsByTagName("ARTIST")[0].textContent;
+            let titulo = disco.getElementsByTagName("TITLE")[0].textContent;
+            
+            //Creamos una fila
+            let fila = document.createElement("tr");
+
+            //Creamos la celda del artista
+            let celdaArtista = document.createElement("td");
+            celdaArtista.textContent = artista;
+            fila.appendChild(celdaArtista);
+
+            //Creamos la celda del titulo
+            let celdaTitulo = document.createElement("td");
+            celdaTitulo.textContent = titulo;
+            fila.appendChild(celdaTitulo);
+
+            //Insertamos la fila en el cuerpo
+            tbody.appendChild(fila);
+          });
+
+          //Insertamos el cuerpo en la tabla
+          tabla.appendChild(tbody);
+          
+          //Insertamos la tabla en el dom
+          document.body.appendChild(tabla);
+        }
+      };
+      
+      xhr.open("GET", "cd_catalog.xml", true);
+      xhr.send();
+    }
+
+  </script>
+</body>
+</html>
