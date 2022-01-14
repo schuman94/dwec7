@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="boton">Mostrar</button>
+    <p id="parrafo"></p>
+
+    <script>
+
+        document.getElementById("boton").addEventListener("click", mostrar);
+
+        function mostrar() {
+            const xhr = new XMLHttpRequest;
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    mostrarDatos(JSON.parse(this.responseText));
+                }
+            };
+
+            xhr.open("GET", "datos.json", true);
+            xhr.send();
+        }
+
+        function mostrarDatos(objeto) {
+            document.getElementById("parrafo").innerHTML = `${objeto.nombre} nació en ${objeto.nacimiento} en ${objeto.pais}.`;
+            document.getElementById("parrafo").innerHTML += "<br>Objeto en modo cadena: " + JSON.stringify(objeto);
+        }
+    </script>
+</body>
+</html>
