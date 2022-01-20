@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="boton">Boton</button>
+  <p id="parrafo"></p>
+
+  <script>
+    document.getElementById("boton").addEventListener("click", generarTemporizador);
+
+    function generarTemporizador() {
+      const ms = prompt("Indica los milisegundos");
+
+      const promesa = new Promise((resolver, rechazar) => {
+        if (ms <= 0) {rechazar("El tiempo no va bien")};
+        setTimeout(() => resolver("Tiempo concluido"), ms);
+      });
+
+      promesa.then((resultado) => document.getElementById("parrafo").innerHTML = resultado)
+        .catch((resultado) => document.getElementById("parrafo").innerHTML = resultado)
+    }
+
+  </script>
+</body>
+</html>
