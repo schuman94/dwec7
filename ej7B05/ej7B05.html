@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="inputNombre">
+  <input type="text" id="inputApellido">
+  <input type="button" id="enviar" value="Enviar">
+  <p id="res"></p>
+
+  <script>
+
+    document.getElementById("enviar").addEventListener("click", () => peticion('https://reqres.in/api/users'));    
+
+    function peticion(urlServidor) {
+      const inputNombre = document.getElementById("inputNombre").value;
+      const inputApellido = document.getElementById("inputApellido").value;
+
+      const objetoJSON = {
+        'first_name': inputNombre,
+        'last_name': inputApellido,
+      };
+
+      const configPet = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(objetoJSON)
+      }
+
+      fetch(urlServidor, configPet)
+        .then(respuesta => {
+          if (respuesta.ok) {
+            return respuesta.json();
+          }
+        })
+        .then(datosJSON => {
+          generarTabla(datosJSON)
+        })
+    }
+
+    function generarTabla(datosJSON) {
+      // Crear una tabla con los datos que le pasamos en formato JSON.
+      // Pero como no tengo ganas, lo muestro en consola
+      console.log(datosJSON);
+      //document.getElementById("res").innerHTML=datosJSON;
+    }
+
+  </script>
+</body>
+</html>
