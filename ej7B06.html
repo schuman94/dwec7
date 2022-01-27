@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="inputNombre">
+  <input type="text" id="inputApellido">
+  <input type="button" id="enviar" value="Enviar">
+  <p id="res"></p>
+
+  <script>
+
+    document.getElementById("enviar").addEventListener("click", () => peticion('https://reqres.in/api/users'));    
+
+    function peticion(urlServidor) {
+      const inputNombre = document.getElementById("inputNombre").value;
+      const inputApellido = document.getElementById("inputApellido").value;
+
+      /*
+      const objetoJSON = {
+        'first_name': inputNombre,
+        'last_name': inputApellido,
+      };
+      */
+      const queryString = `first_name=${inputNombre}&last_name=${inputApellido}`;
+
+      const configPet = {
+        method: 'POST',
+        headers: {                   //json
+          'Content-type': 'application/x-www-form-urlencoded'
+        },  //JSON.stringify(objetoJSON)
+        body: queryString
+      }
+
+      fetch(urlServidor, configPet)
+        .then(respuesta => {
+          if (respuesta.ok) {
+            return respuesta.json();
+          }
+        })
+        .then(datosJSON => {
+          generarTabla(datosJSON)
+        })
+    }
+
+    function generarTabla(datosJSON) {
+      // Crear una tabla con los datos que le pasamos en formato JSON.
+      // Pero como no tengo ganas, lo muestro en consola
+      console.log(datosJSON);
+
+      document.getElementById("res").innerHTML+="ID: " + datosJSON.id;
+      document.getElementById("res").innerHTML+="<br>";
+      document.getElementById("res").innerHTML+="Nombre: " + datosJSON.first_name;
+      document.getElementById("res").innerHTML+="<br>";
+      document.getElementById("res").innerHTML+= "Apellido: " + datosJSON.last_name;
+      document.getElementById("res").innerHTML+="<br>";
+      document.getElementById("res").innerHTML+= "Fecha creación: " + datosJSON.createdAt;
+
+
+
+
+
+
+      /*
+
+      ESTABA CREANDO UNA TABLA PERO NO LO ACABÉ
+
+      //Removemos si ya existia una
+      let tablaAntigua = document.getElementById("tabla");
+          if (tablaAntigua) {
+            tablaAntigua.remove();
+          }
+
+          //Creamos la tabla
+          let tabla = document.createElement("table");
+          tabla.setAttribute("border", "1");
+          tabla.setAttribute("id", "tabla");
+
+          //Creamos la cabecera
+          let cabecera = document.createElement("thead");
+          let filaCabecera = document.createElement("tr");
+
+          let celdaNombre = document.createElement("th");
+          celdaNombre.textContent = "Nombre";
+
+          let celdaApellido = document.createElement("th");
+          celdaApellido.textContent = "Apellido";
+
+          let celdaId = document.createElement("th");
+          celdaId.textContent = "ID";
+
+          let celdaCreatedAt = document.createElement("th");
+          celdaCreatedAt.textContent = "Fecha";
+          
+          filaCabecera.appendChild(celdaNombre);
+          filaCabecera.appendChild(celdaApellido);
+          filaCabecera.appendChild(celdaId);
+          filaCabecera.appendChild(celdaCreatedAt);
+
+          cabecera.appendChild(filaCabecera);
+          tabla.appendChild(cabecera);
+
+          //Creamos el cuerpo
+          let tbody = document.createElement("tbody");
+          let catalogo = ;
+
+          let discosCollection = catalogo.getElementsByTagName("CD");
+          let discos = Array.from(discosCollection);
+          
+          discos.forEach(disco => {
+            //Almacenamos en variables el artista y titulo del disco
+            let artista = disco.getElementsByTagName("ARTIST")[0].textContent;
+            let titulo = disco.getElementsByTagName("TITLE")[0].textContent;
+            
+            //Creamos una fila
+            let fila = document.createElement("tr");
+
+            //Creamos la celda del artista
+            let celdaArtista = document.createElement("td");
+            celdaArtista.textContent = artista;
+            fila.appendChild(celdaArtista);
+
+            //Creamos la celda del titulo
+            let celdaTitulo = document.createElement("td");
+            celdaTitulo.textContent = titulo;
+            fila.appendChild(celdaTitulo);
+
+            //Insertamos la fila en el cuerpo
+            tbody.appendChild(fila);
+          });
+
+          //Insertamos el cuerpo en la tabla
+          tabla.appendChild(tbody);
+          
+          //Insertamos la tabla en el dom
+          document.body.appendChild(tabla);
+        }
+
+        */
+
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="inputNombre">
+  <input type="text" id="inputApellido">
+  <input type="button" id="enviar" value="Enviar">
+  <p id="res"></p>
+
+  <script>
+
+    document.getElementById("enviar").addEventListener("click", () => peticion('https://reqres.in/api/users'));    
+
+    function peticion(urlServidor) {
+      const inputNombre = document.getElementById("inputNombre").value;
+      const inputApellido = document.getElementById("inputApellido").value;
+
+      const objForm = new FormData();
+      objForm.append('first_name', inputNombre);
+      objForm.append('last_name', inputApellido);
+
+      const configPet = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'multipart/form-data'
+        },
+        body: objForm
+      }
+
+      fetch(urlServidor, configPet)
+        .then(respuesta => {
+          if (respuesta.ok) {
+            return respuesta.json();
+          }
+        })
+        .then(datosJSON => {
+          generarTabla(datosJSON)
+        })
+    }
+
+    function generarTabla(datosJSON) {
+
+      //No devuelve el nombre y apellido porque la api no reconoce el formato form-data
+
+      console.log(datosJSON);
+
+      document.getElementById("res").innerHTML+="ID: " + datosJSON.id;
+      document.getElementById("res").innerHTML+="<br>";
+      document.getElementById("res").innerHTML+="Nombre: " + datosJSON.first_name;
+      document.getElementById("res").innerHTML+="<br>";
+      document.getElementById("res").innerHTML+= "Apellido: " + datosJSON.last_name;
+      document.getElementById("res").innerHTML+="<br>";
+      document.getElementById("res").innerHTML+= "Fecha creación: " + datosJSON.createdAt;
+    }
+
+  </script>
+</body>
+</html>
