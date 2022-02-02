@@ -22,14 +22,14 @@
                     console.log(data);
                     mostrarDatos(JSON.parse(data)); //OJO QUE HAY QUE PARSEARLO
                 } else {
-                    throw new Error(response.status);
+                    throw new Error(respuesta.status);
                 }
             } catch(err) {
                 console.log("Error: " + err);
             }
-            
-            
-            
+
+
+
             /*
             fetch('./datos.json')
                 .then((response) => {
@@ -56,7 +56,7 @@
             */
         }
 
-        
+
         function mostrarDatos(objeto) {
             document.getElementById("parrafo").innerHTML = `${objeto.nombre} nació en ${objeto.nacimiento} en ${objeto.pais}.`;
             document.getElementById("parrafo").innerHTML += "<br>Objeto en modo cadena: " + JSON.stringify(objeto);
