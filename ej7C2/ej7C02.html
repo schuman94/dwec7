@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="cambiaContenido">Cambia el contenido</button>
+  <p id="parrafo"></p>
+  
+  <script>
+    document.getElementById('cambiaContenido').addEventListener("click", cambiaContenido);
+
+    /*
+    function cambiaContenido() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('parrafo').innerHTML = this.responseText;
+            }
+        }
+        xhr.open('GET', 'holamundo.txt', true);
+        xhr.send();
+    }
+    */
+
+    /*
+    function cambiaContenido() {
+      fetch("holamundo.txt")
+        .then(respuesta => {
+          if (respuesta.ok) {
+            return respuesta.text();
+          }
+        })
+        .then(data => {
+          document.getElementById("parrafo").innerHTML = data;
+        })
+    }
+    */
+
+    async function cambiaContenido() {
+      try {
+        const respuesta = await fetch("holamundo.txt");
+        if (respuesta.ok) {
+          const data = await respuesta.text();
+          document.getElementById("parrafo").innerHTML = data;
+        } else {
+          throw new Error("Se ha producido un error: " + respuesta.status);
+        }
+      } catch(err) {
+        console.log(err);
+      }
+    }
+
+  </script>
+</body>
+</html>
